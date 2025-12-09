@@ -29,12 +29,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      HUGO_VERSION: 0.128.0 # 建議指定一個版本，或者使用 'latest'
+      HUGO_VERSION: 0.128.0
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Install Hugo CLI
         run: |
-          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
-          && sudo dpkg -i ${{ runner.tem-pages-artifact@v3
+          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb
+          sudo dpkg -i ${{ runner.temp }}/hugo.deb
+
+      - name: Build site
+        run: hugo --minify
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
 
@@ -46,14 +55,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      # Step 1: Upload the artifact (Packaged for Pages)
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire directory ('.' is default, change to './dist' or './build' if needed)
-          path: "."
-
-      # Step 2: Deploy to Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
