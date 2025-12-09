@@ -29,10 +29,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      HUGO_VERSION: 0.128.0
+      HUGO_VERSION: 0.152.2
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Install Hugo CLI
         run: |
@@ -41,6 +43,8 @@ jobs:
 
       - name: Build site
         run: hugo --minify
+        env:
+          HUGO_ENV: production
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
