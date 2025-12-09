@@ -1,0 +1,4 @@
+baseURL = 'https://ccyoasobi.github.io/'
+languageCode = 'en-us'
+title = 'CC Yoasobi'
+theme = 'PaperMod'

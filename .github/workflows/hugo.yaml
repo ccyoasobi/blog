@@ -1,0 +1,52 @@
+name: Deploy Hugo site to Pages
+
+on:
+  # 當推送到 main 分支時觸發
+  push:
+    branches:
+      - main
+  # 允許手動觸發
+  workflow_dispatch:
+
+# 設定權限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 只有一個併發部署，避免衝突
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+# 預設使用 bash
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # 建置工作
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_VERSION: 0.128.0 # 建議指定一個版本，或者使用 'latest'
+    steps:
+      - name: Install Hugo CLI
+        run: |
+          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
+          && sudo dpkg -i ${{ runner.tem-pages-artifact@v3
+        with:
+          path: ./public
+
+  # 部署工作
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4name: Upload artifact
+        uses: actions/upload# Sample workflow for building and deploying a Hugo site to GitHub Pages
