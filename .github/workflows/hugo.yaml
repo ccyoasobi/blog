@@ -46,7 +46,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      # Step 1: Upload the artifact (Packaged for Pages)
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire directory ('.' is default, change to './dist' or './build' if needed)
+          path: "."
+
+      # Step 2: Deploy to Pages
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4name: Upload artifact
-        uses: actions/upload# Sample workflow for building and deploying a Hugo site to GitHub Pages
+        uses: actions/deploy-pages@v4
